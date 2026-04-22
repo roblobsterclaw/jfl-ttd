@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#0D1117">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>JFL TTD Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0D1117;color:#E6EDF3;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
+button,input,select{font:inherit;cursor:pointer}
+.app{max-width:1500px;margin:0 auto;padding:20px}
+.topbar{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px}
+.eyebrow{color:#FF6B00;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:12px;margin-bottom:6px}
+.topbar h1{font-size:clamp(26px,4vw,42px);letter-spacing:-.04em}
+.subtitle{max-width:700px;margin:8px 0 0;color:#9AA4B2;line-height:1.4;font-size:14px}
+.pills{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.pill{border:1px solid #30363D;background:#161B22;padding:8px 12px;border-radius:999px;color:#C9D1D9;font-size:12px}
+.ctrl{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;padding:14px;border:1px solid #30363D;border-radius:16px;background:#161B22;margin-bottom:16px}
+.ctrl label{display:block;font-size:11px;color:#8B949E;margin-bottom:6px}
+.ctrl-wide{grid-column:span 1}
+input,select{background:#0D1117;border:1px solid #30363D;border-radius:12px;color:#E6EDF3;padding:12px;outline:none;width:100%}
+input:focus,select:focus{border-color:#FF6B00;box-shadow:0 0 0 3px rgba(255,107,0,.15)}
+.btn-add{border:1px solid #FF6B00;background:linear-gradient(180deg,#FF7B18,#E8562A);color:#fff;border-radius:12px;padding:12px 16px;font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.stat{background:#161B22;border:1px solid #30363D;border-radius:14px;padding:14px;text-align:center}
+.stat span{display:block;font-size:28px;font-weight:800;line-height:1}
+.stat small{display:block;margin-top:6px;color:#8B949E;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+.zone{background:#161B22;border:1px solid #30363D;border-radius:16px;padding:14px;min-height:200px}
+.zone:last-child:nth-child(odd){grid-column:1/-1}
+.zh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.ze{font-size:18px;margin-bottom:4px}
+.zt{font-size:16px;font-weight:700}
+.zc{background:rgba(255,107,0,.12);color:#FFB37A;border:1px solid rgba(255,107,0,.2);padding:4px 8px;border-radius:999px;font-size:11px;white-space:nowrap}
+.items{list-style:none}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:flex-start;padding:10px 0;border-top:1px solid #30363D}
+.item:first-child{border-top:none}
+.chk{width:26px;height:26px;border-radius:999px;border:1px solid #30363D;background:#0D1117;color:#E6EDF3;font-size:14px;display:flex;align-items:center;justify-content:center}
+.itxt{line-height:1.4;font-size:14px}
+.imeta{margin-top:4px;display:flex;flex-wrap:wrap;gap:6px}
+.badge{padding:3px 7px;border-radius:999px;border:1px solid #30363D;background:rgba(13,17,23,.75);font-size:11px;color:#8B949E}
+.badge-u{border-color:rgba(255,107,0,.35);background:rgba(255,107,0,.15);color:#FFB37A;font-weight:700}
+.badge-w{border-color:rgba(210,153,34,.35);background:rgba(210,153,34,.12);color:#E3B341}
+.badge-d{border-color:rgba(56,217,169,.3);background:rgba(56,217,169,.12);color:#7EE787}
+.iact{display:flex;gap:6px;align-items:center}
+.sb{border:1px solid #30363D;background:#0D1117;color:#C9D1D9;border-radius:8px;padding:6px 8px;font-size:12px}
+.sb:hover{border-color:#FF6B00}
+.sb-del{color:#F85149!important;border-color:rgba(248,81,73,.3)!important}
+.sb-del:hover{background:rgba(248,81,73,.12)!important}
+.sb-edit{color:#FFB37A!important;border-color:rgba(255,107,0,.3)!important}
+.sb-save{color:#FF6B00!important;border-color:#FF6B00!important;font-weight:700}
+.arc{background:#161B22;border:1px solid #30363D;border-radius:16px;padding:14px}
+.arc-h{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.arc-h h2{font-size:16px}
+.arc-h p{color:#8B949E;font-size:13px;margin-top:4px}
+.arc-btns{display:flex;gap:8px;flex-wrap:wrap}
+.ghost{border:1px solid #30363D;background:transparent;color:#C9D1D9;border-radius:10px;padding:8px 14px;font-size:13px}
+.ghost:hover{border-color:#FF6B00}
+.arc-empty{color:#8B949E;padding:8px 0}
+.done .itxt{text-decoration:line-through;color:#7D8590}
+.mm{position:fixed;background:#161B22;border:1px solid #30363D;border-radius:12px;padding:4px;z-index:100;min-width:190px;box-shadow:0 10px 28px rgba(0,0,0,.4)}
+.mm button{display:block;width:100%;text-align:left;background:none;border:none;color:#C9D1D9;padding:8px 10px;border-radius:8px;font-size:13px}
+.mm button:hover{background:rgba(255,107,0,.12);color:#FFB37A}
+.ei{width:100%;background:#0D1117;border:1px solid #FF6B00;border-radius:8px;color:#E6EDF3;padding:8px 10px;font-size:13px;outline:none;box-shadow:0 0 0 3px rgba(255,107,0,.15)}
+.er{display:flex;gap:6px;margin-top:6px;align-items:center}
+.ep{background:#0D1117;border:1px solid #30363D;border-radius:8px;color:#E6EDF3;padding:6px 8px;font-size:12px}
+@media(max-width:1024px){.ctrl{grid-template-columns:1fr 1fr}.ctrl-wide{grid-column:1/-1}.ctrl-btn{grid-column:1/-1}.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.app{padding:12px}.topbar{flex-direction:column}.pills{justify-content:flex-start}.ctrl{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.item{grid-template-columns:auto 1fr}.iact{grid-column:2}}
+#gate{position:fixed;inset:0;background:#0D1117;z-index:99999;display:flex;align-items:center;justify-content:center}
+#gate .box{background:#161B22;border:1px solid #30363D;border-radius:16px;padding:40px 48px;width:320px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.6)}
+#gate .box h2{color:#FF6B00;font-size:18px;margin:8px 0 4px}
+#gate .box p{color:#8B949E;font-size:12px;margin-bottom:20px}
+#gate .box input{margin-bottom:8px}
+#gate .err{color:#F85149;font-size:12px;height:16px;margin-bottom:8px}
+#gate .go{width:100%;padding:10px;background:#FF6B00;border:none;border-radius:8px;color:#fff;font-size:14px;font-weight:600}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.shake{animation:shake .4s ease}
+</style>
+</head>
+<body>
+<div id="gate"><div class="box"><div style="font-size:28px">🦞</div><h2>JFL TTD Dashboard</h2><p>Enter password to continue</p><input id="pw" type="password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')unlock()"><div class="err" id="pwe"></div><button class="go" onclick="unlock()">Enter</button></div></div>
+<div class="app" id="app" style="display:none">
+<header class="topbar"><div><div class="eyebrow">🦞 Joe Lynch Command Center</div><h1>JFL TTD Dashboard</h1><p class="subtitle">Live companion to the printed TTD. Tap to complete, add new items, and keep the day moving.</p></div><div class="pills"><div class="pill" id="pv">v5.0</div><div class="pill" id="pu">Updated —</div><div class="pill">Local-first</div></div></header>
+<section class="ctrl"><div class="ctrl-wide"><label>Quick add</label><input id="ni" type="text" placeholder="Add a new TTD item..." maxlength="180"></div><div><label>Zone</label><select id="nz"></select></div><div><label>Priority</label><select id="np"><option value="pending">Pending</option><option value="urgent">Urgent</option><option value="waiting">Waiting</option></select></div><div class="ctrl-btn"><label>&nbsp;</label><button class="btn-add" id="na">Add item</button></div></section>
+<section class="stats"><div class="stat"><span id="so">0</span><small>Open</small></div><div class="stat"><span id="su">0</span><small>Urgent</small></div><div class="stat"><span id="sd">0</span><small>Done today</small></div><div class="stat"><span id="sw">0</span><small>Waiting</small></div></section>
+<main class="grid" id="grid"></main>
+<section class="arc"><div class="arc-h"><div><h2>Done archive</h2><p>Completed items stay here with a completion stamp.</p></div><div class="arc-btns"><button class="ghost" onclick="backup()">💾 Backup now</button><button class="ghost" onclick="document.getElementById('rf').click()">📥 Restore backup</button><button class="ghost" onclick="clearArc()">Clear archive</button><input type="file" id="rf" accept=".json" style="display:none" onchange="restore(event)"></div></div><div id="arc"></div></section>
+</div>
+<script>
+const SK='jfl-ttd-v5',AK='jfl-ttd-archive-v5';
+const SEED={"version":"5.0","lastUpdated":"2026-04-22T16:39:00-04:00","zones":[{"id":"fire","title":"ON FIRE THIS WEEK","emoji":"🔥","items":[{"id":"april-30-portfolio-execution","text":"April 30 portfolio execution — 8 DAYS AWAY","priority":"urgent","status":"open"},{"id":"surfbox-video-not-filmed","text":"Surfbox: Video NOT filmed — 8 days to Apr 30 deadline","priority":"urgent","status":"open"},{"id":"surfbox-assign-filmmaker","text":"Surfbox: Assign video filmmaker NOW — 8 days to Apr 30","priority":"urgent","status":"open"},{"id":"surfbox-google-ads","text":"Surfbox: Google Ads account ($1K/mo) — setup before Apr 30","priority":"urgent","status":"open"},{"id":"surfbox-go-live-prep","text":"Surfbox go-live readiness","priority":"urgent","status":"open"},{"id":"brad-architect-email","text":"Brad architect email Thursday","priority":"pending","status":"open"},{"id":"lobster-press-buffer","text":"Lobster Press: Buffer acct + forwarding rule (Joe action)","priority":"pending","status":"open"},{"id":"rebolt-patent-decision","text":"ReBolt provisional patent — go/no-go decision needed","priority":"pending","status":"open"},{"id":"unicorn-scout-review","text":"Unicorn Scout findings ready — review AI biz ideas","priority":"pending","status":"open"},{"id":"cancel-claude-max","text":"Cancel Claude Max $200/mo plan","priority":"urgent","status":"open"}]},{"id":"tlc-surfbox","title":"TLC / SURFBOX","emoji":"🪵","items":[{"id":"joey-young-spreadsheet","text":"Joey Young spreadsheet [WAITING] (commission + inventory)","priority":"waiting","status":"open"},{"id":"tariff-pricing-review","text":"Tariff pricing hold and margin watch","priority":"pending","status":"open"},{"id":"certificate-of-compliance","text":"Certificate of Compliance + $150 fee for Phil Reed","priority":"pending","status":"open"},{"id":"epicor-minmax","text":"Epicor Min/Max system — Edwin + Joey leading","priority":"pending","status":"open"},{"id":"surf-city-audit","text":"Surf City margin audit in Epicor (Paul)","priority":"pending","status":"open"},{"id":"neal-denise-prospecting","text":"Neal/Denise follow-up","priority":"pending","status":"open"},{"id":"obx-pipeline","text":"OBX pipeline — zero new rentals Jan-Feb, investigate","priority":"pending","status":"open"},{"id":"surf-city-fb-marketplace","text":"Surf City: Monitor FB Marketplace for Buddy Lynch (Rob/Hermes via API)","priority":"pending","status":"open"},{"id":"list-generator-switch","text":"List generator switch (basement) on FB Marketplace","priority":"pending","status":"open"}]},{"id":"firehouse","title":"FIREHOUSE — 18 NEW ST","emoji":"🏗️","items":[{"id":"pmk-invoice","text":"PMK invoice $13,750 — pay from JLKL TD Bank","priority":"urgent","status":"open"},{"id":"mike-plumber-schedule","text":"Schedule Mike the plumber (Code Official walk-through)","priority":"urgent","status":"open"},{"id":"hvac-contractor","text":"HVAC: finalize contractor (furnace + heat pump)","priority":"pending","status":"open"},{"id":"matty-electrical-work","text":"Matty electrical work","priority":"pending","status":"open"},{"id":"historic-tax-credit","text":"Historic tax credit (National Register) — CPA review","priority":"pending","status":"open"},{"id":"section-47-tax-credit","text":"Section 47 tax credit research","priority":"pending","status":"open"}]},{"id":"investing","title":"INVESTING — JFL&KL FUND","emoji":"💰","items":[{"id":"april-30-execution","text":"APRIL 30 — Execution Day, 8 DAYS, 29 stocks ready","priority":"urgent","status":"open"},{"id":"stagger-deployment","text":"Stagger deployment — 3 tranches over 3 days","priority":"urgent","status":"open"},{"id":"schwab-transfer","text":"Schwab: assets transferred out Apr 17 — verify receipt","priority":"pending","status":"open"},{"id":"macarthur-w2-roth-401k","text":"Roth 401k: Move to W-2 salary (MacArthur coordinate)","priority":"pending","status":"open"},{"id":"baba-position","text":"BABA position: size carefully (Tepper/Burry/Spier hold)","priority":"pending","status":"open"},{"id":"q1-13f-filings","text":"Q1 2026 13F filings due May 15 — monitor","priority":"pending","status":"open"},{"id":"sp-monitoring","text":"S&P monitoring vs exit baseline (6,591.90)","priority":"pending","status":"open"},{"id":"cash-deployment","text":"Cash deployment discipline","priority":"pending","status":"open"}]},{"id":"family","title":"FAMILY / PERSONAL","emoji":"🏠","items":[{"id":"gio-225-check","text":"TEXT TOMMY — did Gio cut $225 check?","priority":"urgent","status":"open"},{"id":"jersey-appliance","text":"Call Jersey Appliance — 609-918-1830 (Thermador hood)","priority":"pending","status":"open"},{"id":"truck-key-rings","text":"Key rings [WAITING ON LJ] (5 rings organized)","priority":"waiting","status":"open"},{"id":"juliana-summer-job","text":"Jules: summer waitressing job plan — talk to her","priority":"pending","status":"open"},{"id":"bella-openclaw-setup","text":"Bella: set up her OpenClaw + AI education","priority":"pending","status":"open"},{"id":"voice-clone-renee","text":"Rob Lobster voice clone — talk to Renee first","priority":"waiting","status":"open"},{"id":"joe-sensi-friday","text":"Joe Sensi visit — Friday 1:00 PM","priority":"urgent","status":"open"}]},{"id":"lobster-press","title":"LOBSTER PRESS","emoji":"🦞","items":[{"id":"lobster-press-inbox","text":"PRESS emails / content intake","priority":"urgent","status":"open"},{"id":"lobster-press-content","text":"Lobster Press content creation","priority":"pending","status":"open"},{"id":"lobster-press-boom-truck","text":"TLC Lobster Press boom truck Facebook post","priority":"pending","status":"open"},{"id":"lobster-press-pipeline","text":"Social media pipeline / draft queue","priority":"pending","status":"open"},{"id":"lp-buffer-account","text":"Set up Buffer account ($60-70/mo)","priority":"pending","status":"open"},{"id":"lp-outlook-forwarding","text":"Outlook forwarding rule: socialmedia@tlcnj.com to Rob","priority":"pending","status":"open"},{"id":"lp-admin-access","text":"Admin access to all social accounts","priority":"pending","status":"open"},{"id":"lp-logos-handles","text":"Logos + handles for TLC, Surfbox, Keli Realtor","priority":"pending","status":"open"}]},{"id":"projects","title":"PROJECTS / VENTURES","emoji":"🚀","items":[{"id":"rebolt-renders","text":"ReBolt renders","priority":"pending","status":"open"},{"id":"provisional-patent","text":"Provisional patent","priority":"pending","status":"open"},{"id":"elevenlabs-voice","text":"ElevenLabs voice setup","priority":"pending","status":"open"},{"id":"voice-clone","text":"Voice clone (TALK TO RENEE FIRST)","priority":"waiting","status":"open"},{"id":"world-cup-pool","text":"World Cup Pool — TeamStake $25 update","priority":"pending","status":"open"},{"id":"corner-market","text":"Corner Market 275 W 9th — deal next step?","priority":"pending","status":"open"},{"id":"colorant-reentry","text":"Colorant industry re-entry — timing decision","priority":"pending","status":"open"},{"id":"t1d-app","text":"T1D App: Dexcom-Oura integration (90-day build)","priority":"pending","status":"open"}]}]};
+let D,A=[];
+function jp(s,f){try{return s?JSON.parse(s):f}catch{return f}}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function unlock(){const i=document.getElementById('pw'),e=document.getElementById('pwe');if(i.value==='soccer12'){sessionStorage.setItem('ttd_a','1');document.getElementById('gate').style.display='none';document.getElementById('app').style.display='block'}else{e.textContent='Wrong password';i.style.borderColor='#F85149';i.parentElement.classList.add('shake');setTimeout(()=>i.parentElement.classList.remove('shake'),400)}}
+(function(){if(sessionStorage.getItem('ttd_a')==='1'){document.getElementById('gate').style.display='none';document.getElementById('app').style.display='block'}})();
+function load(){const s=jp(localStorage.getItem(SK),null);A=jp(localStorage.getItem(AK),[]);if(s&&Array.isArray(s.zones)&&s.zones.length>0){D=s}else{D=clone(SEED)}save()}
+function save(){localStorage.setItem(SK,JSON.stringify(D));localStorage.setItem(AK,JSON.stringify(A))}
+function bump(){D.version=((v)=>{const p=String(v).split('.').map(Number);if(p.length>=2&&p.every(n=>Number.isFinite(n))){p[p.length-1]++;return p.join('.')}return v+'.1'})(D.version);D.lastUpdated=new Date().toISOString();save();render()}
+function fmtDate(iso){if(!iso)return'Updated —';const d=new Date(iso);return'Updated '+d.toLocaleString([],{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}
+function render(){const g=document.getElementById('grid');g.innerHTML='';D.zones.forEach(z=>{const c=document.createElement('section');c.className='zone';const open=z.items.filter(i=>i.status!=='done').length;c.innerHTML=`<div class="zh"><div><div class="ze">${z.emoji||''}</div><div class="zt">${esc(z.title)}</div></div><div class="zc">${open} open</div></div><ul class="items"></ul>`;const ul=c.querySelector('.items');z.items.forEach(i=>ul.appendChild(mkItem(z.id,i)));g.appendChild(c)});renderArc();renderStats();renderMeta();popZones()}
+function mkItem(zid,item){const li=document.createElement('li');li.className='item'+(item.status==='done'?' done':'');const pb=item.priority==='urgent'?'<span class="badge badge-u">Urgent</span>':item.priority==='waiting'?'<span class="badge badge-w">Waiting</span>':'<span class="badge">Pending</span>';li.innerHTML=`<button class="chk">${item.status==='done'?'↺':'☐'}</button><div><div class="itxt">${esc(item.text)}</div><div class="imeta">${pb}</div></div><div class="iact"><button class="sb sb-edit">✏️</button><button class="sb">Move</button><button class="sb sb-del">✕</button></div>`;const btns=li.querySelectorAll('button');btns[0].onclick=()=>toggle(zid,item.id);btns[1].onclick=()=>editItem(zid,item.id,li);btns[2].onclick=(e)=>moveItem(zid,item.id,e);btns[3].onclick=()=>delItem(zid,item.id);return li}
+function toggle(zid,iid){const z=D.zones.find(z=>z.id===zid);const i=z?.items.find(i=>i.id===iid);if(!i)return;if(i.status==='done'){i.status='open';i.completedAt=null;A=A.filter(a=>a.id!==i.id)}else{i.status='done';i.completedAt=new Date().toISOString();A.unshift({id:i.id,text:i.text,completedAt:i.completedAt})}bump()}
+function editItem(zid,iid,li){const z=D.zones.find(z=>z.id===zid);const i=z?.items.find(i=>i.id===iid);if(!i)return;const txt=li.querySelector('.itxt');if(!txt)return;const inp=document.createElement('input');inp.type='text';inp.value=i.text;inp.maxLength=180;inp.className='ei';txt.replaceWith(inp);inp.focus();inp.select();const sel=document.createElement('select');sel.className='ep';['pending','urgent','waiting'].forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p[0].toUpperCase()+p.slice(1);if(p===i.priority)o.selected=true;sel.appendChild(o)});const sv=document.createElement('button');sv.textContent='Save';sv.className='sb sb-save';const cn=document.createElement('button');cn.textContent='Cancel';cn.className='sb';const row=document.createElement('div');row.className='er';row.append(sel,sv,cn);inp.after(row);function doSave(){const t=inp.value.trim();if(t){i.text=t;i.priority=sel.value;bump()}else render()}sv.onclick=doSave;cn.onclick=()=>render();inp.onkeydown=e=>{if(e.key==='Enter')doSave();if(e.key==='Escape')render()}}
+function moveItem(zid,iid,evt){document.querySelectorAll('.mm').forEach(m=>m.remove());const zi=D.zones.findIndex(z=>z.id===zid);const z=D.zones[zi];const ii=z.items.findIndex(i=>i.id===iid);if(ii<0)return;const menu=document.createElement('div');menu.className='mm';D.zones.forEach((tz,ti)=>{if(ti===zi)return;const b=document.createElement('button');b.textContent=`${tz.emoji} ${tz.title}`;b.onclick=()=>{const[item]=z.items.splice(ii,1);tz.items.push(item);menu.remove();bump()};menu.appendChild(b)});if(evt?.target){const r=evt.target.getBoundingClientRect();menu.style.top=r.bottom+4+'px';menu.style.left=Math.min(r.left,window.innerWidth-220)+'px'}document.body.appendChild(menu);setTimeout(()=>{const h=e=>{if(!menu.contains(e.target)){menu.remove();document.removeEventListener('click',h)}};document.addEventListener('click',h)},10)}
+function delItem(zid,iid){if(!confirm('Delete this item?'))return;const z=D.zones.find(z=>z.id===zid);if(!z)return;z.items=z.items.filter(i=>i.id!==iid);bump()}
+function addItem(){const t=document.getElementById('ni').value.trim();if(!t)return;const zid=document.getElementById('nz').value;const p=document.getElementById('np').value;const z=D.zones.find(z=>z.id===zid)||D.zones[0];z.items.unshift({id:'item-'+Date.now(),text:t,priority:p,status:'open'});document.getElementById('ni').value='';document.getElementById('np').value='pending';bump()}
+function renderArc(){const el=document.getElementById('arc');const items=A.slice().sort((a,b)=>new Date(b.completedAt)-new Date(a.completedAt));if(!items.length){el.innerHTML='<div class="arc-empty">No completed items yet.</div>';return}el.innerHTML='';items.forEach(i=>{const li=document.createElement('div');li.className='item done';li.innerHTML=`<div></div><div><div class="itxt">${esc(i.text)}</div><div class="imeta"><span class="badge badge-d">Done</span><span class="badge">${new Date(i.completedAt).toLocaleString()}</span></div></div><div></div>`;el.appendChild(li)})}
+function renderStats(){const all=D.zones.flatMap(z=>z.items);document.getElementById('so').textContent=all.filter(i=>i.status!=='done').length;document.getElementById('su').textContent=all.filter(i=>i.status!=='done'&&i.priority==='urgent').length;document.getElementById('sw').textContent=all.filter(i=>i.status!=='done'&&i.priority==='waiting').length;document.getElementById('sd').textContent=A.length}
+function renderMeta(){document.getElementById('pv').textContent='v'+D.version;document.getElementById('pu').textContent=fmtDate(D.lastUpdated)}
+function popZones(){const s=document.getElementById('nz');const v=s.value;s.innerHTML=D.zones.map(z=>`<option value="${z.id}">${z.title}</option>`).join('');if([...s.options].some(o=>o.value===v))s.value=v}
+function backup(){const b={exportedAt:new Date().toISOString(),version:D.version,data:D,archive:A};const blob=new Blob([JSON.stringify(b,null,2)],{type:'application/json'});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download='jfl-ttd-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(u)}
+function restore(evt){const f=evt.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(e){try{const b=JSON.parse(e.target.result);if(!b.data||!b.data.zones){alert('Invalid backup file.');return}if(!confirm('Restore backup from '+(b.exportedAt||'unknown date')+'? This replaces your current dashboard.'))return;D=b.data;A=Array.isArray(b.archive)?b.archive:[];save();render();alert('Backup restored!')}catch{alert('Could not read backup file.')}};r.readAsText(f);evt.target.value=''}
+function clearArc(){if(!confirm('Clear all completed items from the archive?'))return;A=[];save();render()}
+document.getElementById('na').onclick=addItem;document.getElementById('ni').onkeydown=e=>{if(e.key==='Enter')addItem()};
+load();render();
+</script>
+</body>
+</html>
