@@ -86,6 +86,7 @@ input:focus,select:focus{border-color:#FF6B00;box-shadow:0 0 0 3px rgba(255,107,
 <div id="gate"><div class="box"><div style="font-size:28px">🦞</div><h2>JFL TTD Dashboard</h2><p>Enter password to continue</p><input id="pw" type="password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')unlock()"><div class="err" id="pwe"></div><button class="go" onclick="unlock()">Enter</button></div></div>
 <div class="app" id="app" style="display:none">
 <div style="position:fixed;bottom:20px;right:20px;z-index:90;display:flex;flex-direction:column;gap:10px">
+<button onclick="location.reload()" style="background:#161B22;border:1px solid #30363D;color:#E6EDF3;width:56px;height:56px;border-radius:50%;font-size:22px;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center" title="Refresh">🔄</button>
 <button onclick="window.print()" style="background:#161B22;border:1px solid #30363D;color:#E6EDF3;width:56px;height:56px;border-radius:50%;font-size:22px;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center" title="Print TTD">🖨️</button>
 <button onclick="backup()" style="background:#FF6B00;border:none;color:#fff;width:56px;height:56px;border-radius:50%;font-size:22px;box-shadow:0 4px 16px rgba(255,107,0,.4);display:flex;align-items:center;justify-content:center" title="Save backup">💾</button>
 </div>
@@ -103,8 +104,8 @@ let D,A=[];
 function jp(s,f){try{return s?JSON.parse(s):f}catch{return f}}
 function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
 function clone(o){return JSON.parse(JSON.stringify(o))}
-function unlock(){const i=document.getElementById('pw'),e=document.getElementById('pwe');if(i.value==='soccer12'){sessionStorage.setItem('ttd_a','1');document.getElementById('gate').style.display='none';document.getElementById('app').style.display='block'}else{e.textContent='Wrong password';i.style.borderColor='#F85149';i.parentElement.classList.add('shake');setTimeout(()=>i.parentElement.classList.remove('shake'),400)}}
-(function(){if(sessionStorage.getItem('ttd_a')==='1'){document.getElementById('gate').style.display='none';document.getElementById('app').style.display='block'}})();
+function unlock(){const i=document.getElementById('pw'),e=document.getElementById('pwe');if(i.value==='soccer12'){localStorage.setItem('ttd_auth','1');document.getElementById('gate').style.display='none';document.getElementById('app').style.display='block'}else{e.textContent='Wrong password';i.style.borderColor='#F85149';i.parentElement.classList.add('shake');setTimeout(()=>i.parentElement.classList.remove('shake'),400)}}
+(function(){if(localStorage.getItem('ttd_auth')==='1'){document.getElementById('gate').style.display='none';document.getElementById('app').style.display='block'}})();
 function load(){const s=jp(localStorage.getItem(SK),null);A=jp(localStorage.getItem(AK),[]);if(s&&Array.isArray(s.zones)&&s.zones.length>0){D=s}else{D=clone(SEED)}save()}
 function save(){localStorage.setItem(SK,JSON.stringify(D));localStorage.setItem(AK,JSON.stringify(A))}
 function bump(){D.version=((v)=>{const p=String(v).split('.').map(Number);if(p.length>=2&&p.every(n=>Number.isFinite(n))){p[p.length-1]++;return p.join('.')}return v+'.1'})(D.version);D.lastUpdated=new Date().toISOString();save();render()}
