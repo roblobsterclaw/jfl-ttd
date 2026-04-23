@@ -80,6 +80,7 @@ input:focus,select:focus{border-color:#FF6B00;box-shadow:0 0 0 3px rgba(255,107,
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
 .shake{animation:shake .4s ease}
 @media print{#gate,.search-bar,.ctrl,.arc,.arc-btns,.iact,.btn-add,.stats,div[style*="position:fixed"]{display:none!important}.app{padding:0!important;max-width:100%!important}.topbar{margin-bottom:10px}.grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}.zone{break-inside:avoid;border:1px solid #999!important;background:#fff!important;color:#000!important;padding:10px!important;min-height:auto!important}.zh{margin-bottom:8px}.zt{color:#000!important}.zc{color:#333!important;border-color:#999!important;background:#eee!important}.item{border-color:#ccc!important;padding:6px 0!important;grid-template-columns:auto 1fr!important}.itxt{color:#000!important;font-size:12px!important}.badge{color:#333!important;border-color:#999!important;background:#eee!important;font-size:10px!important}.badge-u{background:#ffe0c0!important;color:#a04000!important;border-color:#e0a060!important}.badge-w{background:#fff3c0!important;color:#806000!important;border-color:#d0b050!important}.chk{border-color:#999!important;background:#fff!important;color:#000!important}.pills{display:none!important}.subtitle{display:none!important}body{background:#fff!important}@page{margin:.5cm;size:portrait}}
+@media print{.print-fire .zone:not(:first-child){display:none!important}.print-fire .zone:first-child{grid-column:1/-1!important}}
 </style>
 </head>
 <body>
@@ -87,6 +88,7 @@ input:focus,select:focus{border-color:#FF6B00;box-shadow:0 0 0 3px rgba(255,107,
 <div class="app" id="app" style="display:none">
 <div style="position:fixed;bottom:20px;right:20px;z-index:90;display:flex;flex-direction:column;gap:10px">
 <button onclick="location.reload()" style="background:#161B22;border:1px solid #30363D;color:#E6EDF3;width:56px;height:56px;border-radius:50%;font-size:22px;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center" title="Refresh">🔄</button>
+<button onclick="printFire()" style="background:#161B22;border:1px solid #30363D;color:#E6EDF3;width:56px;height:56px;border-radius:50%;font-size:22px;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center" title="Print On Fire only">🔥</button>
 <button onclick="window.print()" style="background:#161B22;border:1px solid #30363D;color:#E6EDF3;width:56px;height:56px;border-radius:50%;font-size:22px;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center" title="Print TTD">🖨️</button>
 <button onclick="backup()" style="background:#FF6B00;border:none;color:#fff;width:56px;height:56px;border-radius:50%;font-size:22px;box-shadow:0 4px 16px rgba(255,107,0,.4);display:flex;align-items:center;justify-content:center" title="Save backup">💾</button>
 </div>
@@ -136,6 +138,7 @@ function restore(evt){const f=evt.target.files[0];if(!f)return;const r=new FileR
 function clearArc(){if(!confirm('Clear all completed items from the archive?'))return;A=[];save();render()}
 document.getElementById('na').onclick=addItem;document.getElementById('ni').onkeydown=e=>{if(e.key==='Enter')addItem()};
 function doSearch(q){const sr=document.getElementById('sr');if(!q||q.length<2){sr.style.display='none';sr.innerHTML='';return}const low=q.toLowerCase();const hits=[];D.zones.forEach(z=>{z.items.forEach(i=>{if(i.text.toLowerCase().includes(low)){hits.push({zone:z.title,emoji:z.emoji,text:i.text,priority:i.priority,status:i.status})}})});A.forEach(a=>{if(a.text.toLowerCase().includes(low)){hits.push({zone:'DONE ARCHIVE',emoji:'✅',text:a.text,priority:'done',status:'done'})}});if(!hits.length){sr.innerHTML='<div style="padding:12px;color:#8B949E;font-size:13px">No matches found</div>';sr.style.display='block';return}sr.innerHTML=hits.map(h=>{const bc=h.priority==='urgent'?'badge-u':h.priority==='waiting'?'badge-w':h.priority==='done'?'badge-d':'';return`<div style="padding:10px 14px;border-bottom:1px solid #30363D;font-size:13px"><span class="badge ${bc}" style="margin-right:6px">${h.emoji} ${esc(h.zone)}</span> ${esc(h.text)}</div>`}).join('');sr.style.display='block'}document.addEventListener('click',e=>{if(!e.target.closest('.search-bar')){document.getElementById('sr').style.display='none'}});
+function printFire(){document.body.classList.add('print-fire');window.print();setTimeout(()=>document.body.classList.remove('print-fire'),500)}
 load().then(()=>{render();fbListen()});
 </script>
 </body>
